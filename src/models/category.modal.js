@@ -7,11 +7,6 @@ const categorySchema = new mongoose.Schema(
       unique: true,
       required: true,
     },
-    inventoryId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Inventory",
-      required: true,
-    },
   },
   {
     timestamps: true,

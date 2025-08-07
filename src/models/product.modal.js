@@ -1,4 +1,13 @@
 import mongoose from "mongoose";
+import { required } from "zod/v4-mini";
+const sizeSchema = new mongoose.Schema({
+  sizeNumber: {
+    type: Number,
+    enum: [28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48],
+    required: true,
+  },
+  quantity: { type: Number, required: true, min: 0, required: true },
+});
 
 const productSchema = new mongoose.Schema(
   {
@@ -23,22 +32,16 @@ const productSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
       required: true,
+      index: true,
     },
-    inventoryId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Inventory",
-      required: true,
-    },
+
     gender: {
       type: String,
       required: true,
       enum: ["male", "female"],
+      index: true,
     },
-    size: {
-      type: String,
-      required: true,
-      enum: [28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48],
-    },
+    size: [sizeSchema],
   },
   {
     timestamps: true,

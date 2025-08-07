@@ -1,11 +1,33 @@
 import mongoose from "mongoose";
 
+const orderItemsSchema = new mongoose.Schema({
+  productId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Product",
+    required: true,
+    index: true,
+  },
+  sizeNumber: {
+    type: Number,
+    required: true,
+  },
+  quantity: {
+    type: Number,
+    required: true,
+  },
+  price: {
+    type: Number,
+    required: true,
+  },
+});
+
 const orderSchema = new mongoose.Schema(
   {
     orderId: {
       type: String,
       required: true,
       unique: true,
+      index: true,
     },
     customerName: {
       type: String,
@@ -14,13 +36,9 @@ const orderSchema = new mongoose.Schema(
     },
     customerEmail: {
       type: String,
-      required: [true, "Email is required"],
-      lowercase: true,
+      required: true,
       trim: true,
-      match: [
-        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-        "Please fill a valid email address",
-      ],
+      lowercase: true,
     },
     customerPhone: {
       type: String,
@@ -32,13 +50,11 @@ const orderSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    items: [orderItemsSchema],
     orderDate: {
+      type: Date,
       default: Date.now,
-    },
-    productId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Product",
-      required: true,
+      index: true,
     },
     totalPrice: {
       type: Number,
@@ -46,15 +62,13 @@ const orderSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["pending", "completed", "cancelled"],
+      enum: ["pending", "delivered", "cancelled", "returned"],
       default: "pending",
+      index: true,
     },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
 const Order = mongoose.model("Order", orderSchema);
-
 export default Order;
