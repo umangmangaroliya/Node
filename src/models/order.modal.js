@@ -29,6 +29,13 @@ const orderSchema = new mongoose.Schema(
       unique: true,
       index: true,
     },
+    branchId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Branch",
+      required: true,
+      index: true,
+    },
+
     customerName: {
       type: String,
       required: true,
@@ -60,12 +67,14 @@ const orderSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    status: {
-      type: String,
-      enum: ["pending", "delivered", "cancelled", "returned"],
-      default: "pending",
-      index: true,
-    },
+    enum: [
+      "pending",
+      "confirmed",
+      "picked",
+      "returned",
+      "cancelled",
+      "completed",
+    ],
   },
   { timestamps: true }
 );
