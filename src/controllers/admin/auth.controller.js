@@ -85,6 +85,10 @@ const login = async (req, res, next) => {
       throw new ApiError(401, "User is not verified");
     }
 
+    if (!findUser.status) {
+      throw new ApiError(401, "User is inactive");
+    }
+
     const isMatch = await findUser.comparePassword(password);
 
     if (!isMatch) {
@@ -267,6 +271,7 @@ const verifyEmail = async (req, res, next) => {
     }
 
     findUser.isVerify = true;
+    findUser.status = true;
     findUser.verifyAt = new Date();
     await findUser.save();
     findToken.isUsed = true;

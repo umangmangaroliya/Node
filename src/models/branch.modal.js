@@ -13,12 +13,15 @@ const branchSchema = new mongoose.Schema(
     },
     phone: {
       type: String,
+      required: true,
     },
     email: {
       type: String,
+      required: true,
     },
     city: {
       type: String,
+      required: true,
     },
     isActive: {
       type: Boolean,
